@@ -30,11 +30,20 @@ public class GUI_PembayaranGaji extends javax.swing.JFrame {
      */
     public GUI_PembayaranGaji() {
         initComponents();
-        tampil(); // Memanggil method tampil()
+        tampil();
+//        // Mengambil model data dari tabel dan menyimpannya dalam objek DefaultTableModel dataModel
+//        DefaultTableModel dataModel = (DefaultTableModel) table_pembayarangaji.getModel();
+//        // Mendapatkan jumlah baris yang ada dalam model data saat ini
+//        int rowCount = dataModel.getRowCount();
+//        while (rowCount > 0) {
+//            dataModel.removeRow(rowCount - 1);
+//            // Menghapus baris terakhir dari model data
+//            rowCount = dataModel.getRowCount();
+//            // Memperbarui nilai rowCount setelah penghapusan baris terakhir
+//        }
     }
     
     public void batal() {
-        // Mengosongkan semua textfield dan membatalkan pemilihan buttongrup
         txtID.setText("");
         txtNama.setText("");
         txtEmail.setText("");
@@ -46,13 +55,10 @@ public class GUI_PembayaranGaji extends javax.swing.JFrame {
         buttonGroupMp.clearSelection();
  }
     public Connection conn;
-    // Variabel conn digunakan untuk menyimpan koneksi ke database
     
     String id_karyawan1, nama1, email1, jabatan1, gapok1, tnj1, pajak1, toji1, mepem1;
-    // Membuat variabel baru yang digunakan untuk menyimpan data yang akan ditampilkan dalam textfield dan buttongrup saat item dipilih
     
     public void itempilih() {
-    // Membuat method itempilih() yang digunakan untuk menetapkan nilai textfield dan memilih buttongrup berdasarkan nilai variabel yang telah disimpan sebelumnya
         txtID.setText(id_karyawan1);
         txtNama.setText(nama1);
         txtEmail.setText(email1);
@@ -65,11 +71,11 @@ public class GUI_PembayaranGaji extends javax.swing.JFrame {
             radiobtnTransferBank.setSelected(true);
         } else {
             radiobtnTunai.setSelected(true);
+
         }
     }
     
     public void koneksi() throws SQLException {
-    // Membuat method koneksi() yang digunakan untuk membuat koneksi ke database MySQL menggunakan driver JDBC
         try {
             conn = null;
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -84,7 +90,6 @@ public class GUI_PembayaranGaji extends javax.swing.JFrame {
     }
     
     public void tampil() {
-    // Membuat Method tampil()yang digunakan untuk menampilkan data dari tabel tb_pembayarangaji ke dalam komponen tabel table_pembayarangaji
         DefaultTableModel tabelhead = new DefaultTableModel();
         tabelhead.addColumn("ID Karyawan");
         tabelhead.addColumn("Nama Karyawan");
@@ -101,10 +106,8 @@ public class GUI_PembayaranGaji extends javax.swing.JFrame {
             Statement stat = conn.createStatement();
             ResultSet res = stat.executeQuery(sql);
             while (res.next()) {
-                // Menambahkan baris dengan nilai-nilai yang sesuai ke model tabel
                 tabelhead.addRow(new Object[]{res.getString(2), res.getString(3), res.getString(4), res.getString(5), res.getString(6), res.getString(7), res.getString(8), res.getString(9), res.getString(10),});
             }
-            // Mengatur model tabel ke tabel_pembayarangaji
             table_pembayarangaji.setModel(tabelhead);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "BELUM TERKONEKSI");
@@ -112,13 +115,11 @@ public class GUI_PembayaranGaji extends javax.swing.JFrame {
     }
     
     public void refresh() {
-    // Membuat instance baru dari GUI_PembayaranGaji dan menampilkannya
         new GUI_PembayaranGaji().setVisible(true);
         this.setVisible(false);
     }
     
     public void insert() {
-        // Mendapatkan nilai-nilai dari textfield dan buttongrup
         String id_karyawan = txtID.getText();
         String nama_karyawan = txtNama.getText();
         String email = txtEmail.getText();
@@ -128,7 +129,6 @@ public class GUI_PembayaranGaji extends javax.swing.JFrame {
         String pajak = txtPajak.getText();
         String total_gaji = txtTotalGaji.getText();
         String metode_pembayaran;
-        // Mengambil metode pembayaran yang dipilih
         if (radiobtnTransferBank.isSelected()) {
             metode_pembayaran = "Transfer Bank";
         } else {
@@ -136,13 +136,10 @@ public class GUI_PembayaranGaji extends javax.swing.JFrame {
         }
         try {
             koneksi();
-            // Membuat statement untuk koneksi database
             Statement statement = conn.createStatement();
-            // Menambahkan data baru ke tabel tb_pembayarangaji
             statement.executeUpdate("INSERT INTO tb_pembayarangaji (id_karyawan, nama_karyawan, email, jabatan, gaji_pokok, tunjangan, pajak, total_gaji, metode_pembayaran)"
                     + "VALUES('" + id_karyawan + "','" + nama_karyawan + "','" + email + "','" + jabatan + "','" + gaji_pokok + "','" + tunjangan + "', '" + pajak + "', '" + total_gaji + "', '" + metode_pembayaran + "')");
             statement.close();
-            // Menampilkan pesan sukses setelah menambahkan data
             JOptionPane.showMessageDialog(null, "Berhasil Memasukan Data Pembayaran Gaji!" + "\n");
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Terjadi Kesalahan Input!");
@@ -151,7 +148,6 @@ public class GUI_PembayaranGaji extends javax.swing.JFrame {
     }
     
     public void update() {
-        // Mendapatkan nilai-nilai dari textfield dan buttongrup
         String id_karyawan = txtID.getText();
         String nama_karyawan = txtNama.getText();
         String email = txtEmail.getText();
@@ -161,7 +157,6 @@ public class GUI_PembayaranGaji extends javax.swing.JFrame {
         String pajak = txtPajak.getText();
         String total_gaji = txtTotalGaji.getText();
         String metode_pembayaran;
-        // Memeriksa metode pembayaran yang dipilih
         if (radiobtnTransferBank.isSelected()) {
             metode_pembayaran = "Transfer Bank";
         } else {
@@ -169,16 +164,13 @@ public class GUI_PembayaranGaji extends javax.swing.JFrame {
         }
         String idkarlama = id_karyawan1;
         try {
-            // Membuat statement untuk koneksi database
             Statement statement = conn.createStatement();
-            // Menjalankan query UPDATE untuk memperbarui data dalam tabel tb_pembayarangaji
             statement.executeUpdate("UPDATE tb_pembayarangaji SET id_karyawan='" + id_karyawan + "'," + "nama_karyawan='" + nama_karyawan + "',"
                     + "email='" + email + "'" + ",jabatan='" + jabatan + "',gaji_pokok='" + gaji_pokok + "',tunjangan='"
                     + tunjangan + "pajak='" + pajak + "total_gaji='" + total_gaji + "metode_pembayaran='" + metode_pembayaran + "' WHERE id_karyawan = '" + idkarlama + "'");
             statement.close();
             conn.close();
-            // Menampilkan pesan sukses setelah memperbarui data
-            JOptionPane.showMessageDialog(null, "Update Data Pembayaran Gaji Berhasil!");
+            JOptionPane.showMessageDialog(null, "Update Data Mahasiswa Berhasil!");
         } catch (Exception e) {
             System.out.println("Error : " + e);
         }
@@ -186,16 +178,12 @@ public class GUI_PembayaranGaji extends javax.swing.JFrame {
     }
     
     public void delete() {
-        // Menampilkan dialog konfirmasi untuk menghapus data
         int ok = JOptionPane.showConfirmDialog(null, "Apakah Anda yakin akan menghapus data ?", "Konfirmasi", JOptionPane.YES_NO_OPTION);
         if (ok == 0) {
             try {
-                // Query DELETE untuk menghapus data dari tabel tb_pembayarangaji
                 String sql = "DELETE FROM tb_pembayarangaji WHERE id_karyawan='" + txtID.getText() + "'";
                 java.sql.PreparedStatement stmt = conn.prepareStatement(sql);
                 stmt.executeUpdate();
-                
-                // Menampilkan pesan sukses setelah menghapus data
                 JOptionPane.showMessageDialog(null, "Data Berhasil di hapus");
                 batal();
             } catch (Exception e) {
@@ -208,13 +196,10 @@ public class GUI_PembayaranGaji extends javax.swing.JFrame {
     public void cari() {
         try {
             try ( Statement statement = conn.createStatement()) {
-                
-                // Query SELECT untuk mencari data berdasarkan id_karyawan
                 String sql = "SELECT * FROM tb_pembayarangaji WHERE `id_karyawan`  LIKE '%" + txtSearch.getText() + "%'";
                 ResultSet rs = statement.executeQuery(sql); //menampilkan data dari sql query
                 if (rs.next()) // .next() = scanner method
                 {
-                    // Menampilkan data yang ditemukan ke elemen-elemen input
                     txtID.setText(rs.getString(2));
                     txtNama.setText(rs.getString(3));
                     txtEmail.setText(rs.getString(4));
@@ -224,15 +209,12 @@ public class GUI_PembayaranGaji extends javax.swing.JFrame {
                     txtPajak.setText(rs.getString(8));
                     txtTotalGaji.setText(rs.getString(9));
                     String mp = rs.getString(10);
-                    
-                    // Memeriksa metode pembayaran yang digunakan
-                    if (mp.equalsIgnoreCase("Transfer Bank")) {
+                    if (mp.equalsIgnoreCase("L")) {
                         radiobtnTransferBank.setSelected(true);
                     } else {
                         radiobtnTunai.setSelected(true);
                     }
                 } else {
-                    // Menampilkan pesan jika tidak ada data yang dicari
                     JOptionPane.showMessageDialog(null, "Data yang Anda cari tidak ada");
                 }
             }
@@ -280,12 +262,12 @@ public class GUI_PembayaranGaji extends javax.swing.JFrame {
         btnSearch = new javax.swing.JButton();
         btnBatal = new javax.swing.JButton();
         btnUpdate = new javax.swing.JButton();
-        btnDataLembur = new javax.swing.JButton();
+        btnPembayaranGaji = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel1.setText("PEMBAYARAN GAJI KARYAWAN");
+        jLabel1.setText("SLIP GAJI KARYAWAN");
 
         jLabel2.setText("ID Karyawan");
 
@@ -339,11 +321,6 @@ public class GUI_PembayaranGaji extends javax.swing.JFrame {
                 "ID Karyawan", "Nama Karyawan", "Email", "Jabatan", "Gaji Pokok", "Tunjangan", "Pajak", "Total Gaji", "Metode Pembayaran"
             }
         ));
-        table_pembayarangaji.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                table_pembayarangajiMouseClicked(evt);
-            }
-        });
         jScrollPane1.setViewportView(table_pembayarangaji);
 
         btnHapus.setText("Hapus");
@@ -356,104 +333,82 @@ public class GUI_PembayaranGaji extends javax.swing.JFrame {
         jLabel10.setText("Email");
 
         btnSearch.setText("Search");
-        btnSearch.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSearchActionPerformed(evt);
-            }
-        });
 
         btnBatal.setText("Batal");
-        btnBatal.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnBatalActionPerformed(evt);
-            }
-        });
 
         btnUpdate.setText("Update");
-        btnUpdate.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnUpdateActionPerformed(evt);
-            }
-        });
 
-        btnDataLembur.setText("Form Data Lembur");
-        btnDataLembur.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnDataLemburActionPerformed(evt);
-            }
-        });
+        btnPembayaranGaji.setText("Form Pembayaran Gaji");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(30, 30, 30)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(30, 30, 30)
+                        .addGap(122, 122, 122)
+                        .addComponent(radiobtnTunai))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(181, 181, 181)
+                        .addComponent(jLabel1))
+                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(122, 122, 122)
-                                .addComponent(radiobtnTunai))
-                            .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel2)
-                                            .addComponent(jLabel3)
-                                            .addComponent(jLabel4)
-                                            .addComponent(jLabel5)
-                                            .addComponent(jLabel6)
-                                            .addComponent(jLabel7)
-                                            .addComponent(jLabel8)
-                                            .addComponent(jLabel10))
-                                        .addGap(33, 33, 33)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(txtPajak, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
-                                            .addComponent(txtTunjangan)
-                                            .addComponent(txtGajiPokok)
-                                            .addComponent(txtNama)
-                                            .addComponent(txtID)
-                                            .addComponent(txtTotalGaji, javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addComponent(txtJabatan, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
-                                            .addComponent(txtEmail)))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel9)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(radiobtnTransferBank)))
-                                .addGap(26, 26, 26)
+                                    .addComponent(jLabel2)
+                                    .addComponent(jLabel3)
+                                    .addComponent(jLabel4)
+                                    .addComponent(jLabel5)
+                                    .addComponent(jLabel6)
+                                    .addComponent(jLabel7)
+                                    .addComponent(jLabel8)
+                                    .addComponent(jLabel10))
+                                .addGap(33, 33, 33)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 755, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addGap(26, 26, 26)
-                                            .addComponent(btnSearch)
-                                            .addGap(25, 25, 25)))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(btnCetak, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(btnHapus, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(btnBatal, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(btnClose, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(btnDataLembur))))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(200, 200, 200)
-                        .addComponent(jLabel1)))
+                                    .addComponent(txtPajak, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
+                                    .addComponent(txtTunjangan)
+                                    .addComponent(txtGajiPokok)
+                                    .addComponent(txtNama)
+                                    .addComponent(txtID)
+                                    .addComponent(txtTotalGaji, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(txtJabatan, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
+                                    .addComponent(txtEmail)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel9)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(radiobtnTransferBank)))
+                        .addGap(26, 26, 26)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 755, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(btnSearch)
+                                    .addGap(33, 33, 33)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnCetak, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnHapus, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnBatal, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnClose, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnPembayaranGaji)))))
                 .addContainerGap(20, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(15, 15, 15)
+                .addComponent(jLabel1)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(15, 15, 15)
-                        .addComponent(jLabel1)
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
@@ -487,7 +442,7 @@ public class GUI_PembayaranGaji extends javax.swing.JFrame {
                             .addComponent(jLabel8)
                             .addComponent(txtTotalGaji, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(54, 54, 54)
+                        .addGap(19, 19, 19)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnSearch))
@@ -502,7 +457,7 @@ public class GUI_PembayaranGaji extends javax.swing.JFrame {
                     .addComponent(btnClose)
                     .addComponent(btnBatal)
                     .addComponent(btnUpdate)
-                    .addComponent(btnDataLembur))
+                    .addComponent(btnPembayaranGaji))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(radiobtnTunai)
                 .addGap(27, 27, 27))
@@ -513,12 +468,53 @@ public class GUI_PembayaranGaji extends javax.swing.JFrame {
 
     private void btnCetakActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCetakActionPerformed
         // TODO add your handling code here:
-        insert(); // Memanggil method insert()
+        // Menampilkan pesan dialog bahwa data telah ditambahkan ke tabel
+        JOptionPane.showMessageDialog(null, "Data anda Ditambahkan Ke tabel");
+        // Mengambil model data dari tabel
+        DefaultTableModel dataModel = (DefaultTableModel) table_pembayarangaji.getModel();
+        // Inisialisasi sebuah ArrayList bernama 'list'
+        List list = new ArrayList<>();
+        // Mengatur tabel untuk membuat kolom dari model secara otomatis
+
+        table_pembayarangaji.setAutoCreateColumnsFromModel(true);
+        // Membuat instance dari kelas PembayaranGaji
+        PembayaranGaji gaji = new PembayaranGaji();
+       
+        gaji.idKaryawan(txtID.getText());
+        gaji.namaKaryawan(txtNama.getText());
+        gaji.email(txtEmail.getText());
+        gaji.jabatan(txtJabatan.getText());
+        gaji.gajiPokok(Integer.parseInt(txtGajiPokok.getText()));
+        gaji.tunjangan(Integer.parseInt(txtTunjangan.getText()));
+        gaji.pajak(Integer.parseInt(txtPajak.getText()));
+        gaji.totalGaji(Integer.parseInt(txtTotalGaji.getText()));
+        if (radiobtnTransferBank.isSelected()) {
+            gaji.metodePembayaran = radiobtnTransferBank.getText();
+        } else {
+            gaji.metodePembayaran = radiobtnTunai.getText();
+        }
+
+        // Menambahkan data-data dari objek PembayaranGaji ke dalam ArrayList 'list'
+        list.add(gaji.idKaryawan());
+        list.add(gaji.namaKaryawan());
+        list.add(gaji.Email());
+        list.add(gaji.jabatan());
+        list.add(gaji.gajiPokok());
+        list.add(gaji.tunjangan());
+        list.add(gaji.Pajak());
+        list.add(gaji.totalGaji());
+        list.add(gaji.metodePembayaran());
+
+        // Menambahkan baris baru ke model tabel menggunakan data dari ArrayList 'list'
+        dataModel.addRow(list.toArray());
+        // Memanggil fungsi 'clear' untuk membersihkan nilai dari komponen
+        //clear();
     }//GEN-LAST:event_btnCetakActionPerformed
 
     private void btnCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCloseActionPerformed
         // TODO add your handling code here:
-        dispose();  // Menutup jendela saat tombol Close diklik
+        //exit 
+        dispose(); 
     }//GEN-LAST:event_btnCloseActionPerformed
 
     private void radiobtnTransferBankActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radiobtnTransferBankActionPerformed
@@ -527,44 +523,21 @@ public class GUI_PembayaranGaji extends javax.swing.JFrame {
 
     private void btnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusActionPerformed
         // TODO add your handling code here:
-        delete(); // Memanggil method delete()
+        // Mengambil model data dari tabel
+        DefaultTableModel dataModel = (DefaultTableModel) table_pembayarangaji.getModel();
+
+        // Mendapatkan indeks baris yang dipilih
+        int selectedRow = table_pembayarangaji.getSelectedRow();
+
+        // Memastikan ada baris yang dipilih sebelum menghapus
+        if (selectedRow != -1) {
+            // Menghapus baris yang dipilih dari model tabel
+            dataModel.removeRow(selectedRow);
+        } else {
+            // Jika tidak ada baris yang dipilih, berikan pesan atau lakukan tindakan lain
+            JOptionPane.showMessageDialog(this, "Pilih baris yang ingin dihapus.", "Peringatan", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_btnHapusActionPerformed
-
-    private void btnBatalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBatalActionPerformed
-        // TODO add your handling code here:
-        batal(); // Memanggil method batal()
-    }//GEN-LAST:event_btnBatalActionPerformed
-
-    private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
-        // TODO add your handling code here:
-        update(); // Memanggil method update()
-    }//GEN-LAST:event_btnUpdateActionPerformed
-
-    private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
-        // TODO add your handling code here:
-        cari(); // Memanggil method cari()
-    }//GEN-LAST:event_btnSearchActionPerformed
-
-    private void btnDataLemburActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDataLemburActionPerformed
-        // TODO add your handling code here:
-        new GUI_DataLembur().setVisible(true); // Membuka jendela GUI_DataLembur saat tombol Data Lembur diklik
-    }//GEN-LAST:event_btnDataLemburActionPerformed
-
-    private void table_pembayarangajiMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_table_pembayarangajiMouseClicked
-        // TODO add your handling code here:
-        int tabel = table_pembayarangaji.getSelectedRow(); // Mendapatkan baris yang dipilih saat mengklik tb_pembayarangaji
-        // Menyimpan nilai-nilai baris yang dipilih ke variabel-variabel
-        id_karyawan1 = table_pembayarangaji.getValueAt(tabel, 0).toString();
-        nama1 = table_pembayarangaji.getValueAt(tabel, 1).toString();
-        email1 = table_pembayarangaji.getValueAt(tabel, 2).toString();
-        jabatan1 = table_pembayarangaji.getValueAt(tabel, 3).toString();
-        gapok1 = table_pembayarangaji.getValueAt(tabel, 4).toString();
-        tnj1 = table_pembayarangaji.getValueAt(tabel, 5).toString();
-        pajak1 = table_pembayarangaji.getValueAt(tabel, 6).toString();
-        toji1 = table_pembayarangaji.getValueAt(tabel, 7).toString();
-        mepem1 = table_pembayarangaji.getValueAt(tabel, 8).toString();      
-        itempilih(); // Memanggil metode itempilih()
-    }//GEN-LAST:event_table_pembayarangajiMouseClicked
 
     /**
      * @param args the command line arguments
@@ -605,8 +578,8 @@ public class GUI_PembayaranGaji extends javax.swing.JFrame {
     private javax.swing.JButton btnBatal;
     private javax.swing.JButton btnCetak;
     private javax.swing.JButton btnClose;
-    private javax.swing.JButton btnDataLembur;
     private javax.swing.JButton btnHapus;
+    private javax.swing.JButton btnPembayaranGaji;
     private javax.swing.JButton btnSearch;
     private javax.swing.JButton btnUpdate;
     private javax.swing.ButtonGroup buttonGroupMp;
