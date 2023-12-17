@@ -2,7 +2,7 @@ Nama : Mohammad Joenathan Tito Ardiansyah Prayitno
 
 NIM  : 2218060
 
-Tugas Rumah Object Oriented Programming (OOP) 2023
+Tugas Rumah Praktikum Object Oriented Programming (OOP) 2023
 Dengan Tema Keuangan Yaitu
 
 --- Pembayaran Gaji Perusahaan ---
