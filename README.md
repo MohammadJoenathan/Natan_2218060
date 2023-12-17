@@ -25,6 +25,6 @@ Aplikasi ini dibangun dengan menggunakan :
 
 ## Requirements
 
-- [Apache NetBeans IDE 20 or leter]((https://netbeans.apache.org/front/main/download/index.html) )
+- [Apache NetBeans IDE 20 or leter](https://netbeans.apache.org/front/main/download/index.html)
 - [Laragon 5.0 or leter](https://laragon.org/download/index.html)
 - [MySQL 8.0.35 or leter](https://dev.mysql.com/downloads/installer/) 
