@@ -1,11 +1,14 @@
 Nama : Mohammad Joenathan Tito Ardiansyah Prayitno
+
 NIM  : 2218060
 
 Project Praktikum Object Oriented Programming (OOP) 2023
 Dengan Tema Keuangan Yaitu
+
 --- Pembayaran Gaji Perusahaan ---
 
 Deskripsi :
+
 Project Praktikum ini merupakan sebuah implementasi lengkap dari konsep OOP yang meliputi Konstruktor, Inheritance, Enkapsulasi, 
 Overriding, Overloading, Abstract, Polimorfisme, Interface, dan Exception Handling. Selain itu, proyek ini juga terhubung dengan 
 database MySQL, sehingga setiap penambahan data melalui antarmuka pengguna (GUI) akan secara langsung terhubung dengan database. 
